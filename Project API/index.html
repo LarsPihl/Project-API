@@ -8,11 +8,8 @@
 <style>
 
     :root {
-        --light-color: #f3f3f3;
-        --dark-color: #313131;
-        --primary-color: #ea7f8e;
-        --accent-color: #6a5acd;
-        --shadow-color: #cfcfcf;
+        --whiteness: #f8f8f8;
+        --dark: #161616;
       }
 
     body {
@@ -21,42 +18,88 @@
         align-items: center;
         justify-content: center;
         width: 100vw;
+        background-color: var(--dark);
+        color: var(--whiteness);
+        margin: 0px;
     }
+
+    #displayListButton {
+        margin: 5vh 0vh;
+        padding: 15px;
+        font-size: 16px;
+    }
+
     #movies {
-        width: 80vw;
+        width: inherit;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
+        text-align: center;
+        margin-bottom: 5vh;
     }
 
     #moviePoster {
-        width: 80vw;
+        width: 30vw;
+    }
+
+    #synopsis {
+        width: 50vw;
+    }
+
+    #buttons {
+        width: 95vw;
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+    }
+
+    @media screen and (max-width: 576px) {
+
+        #buttons {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        #moviePoster, #synopsis {
+            width: 80vw;
+        }
+
     }
 </style>
-<body>
 
+<body>
+    <button id = "displayListButton"onclick = "displayMovieList()">Pick a movie</button>
     <div id = "buttons">
     <button class = "movieButton" id = "550">Fight Club</button>
     <button class = "movieButton" id = "551">The Poseidon Adventure</button>
+    <button class = "movieButton" id = "552">Pane e tulipani</button>
+    <button class = "movieButton" id = "553">Dogville</button>
+    <button class = "movieButton" id = "554">Кукушка</button>
+    <button class = "movieButton" id = "555">Absolut</button>
+    <button class = "movieButton" id = "557">Spider-Man</button>
+    <button class = "movieButton" id = "558">Spider-Man 2</button>
+    <button class = "movieButton" id = "559">Spider-Man 3</button>
+    <button class = "movieButton" id = "560">Secret Beyond the Door...</button>
     </div>
 
-    <div id = "movies"></div>
+    <div id = "movies">
     <h2 id = "nameh2"></h2>
     <img id = "moviePoster" alt = "Movie Poster" src = "">
     <p id = "synopsis"></p>
+    </div>
 
     <script>
 
         let movies = document.getElementById("movies"), nameh2 = document.getElementById("nameh2"), moviePoster = document.getElementById("moviePoster"),
         description = document.getElementById("synopsis"), hideImageOnce = true,
-        movieButtons = document.getElementsByClassName("movieButton"); 
-
+        movieButtons = document.getElementsByClassName("movieButton"), buttons = document.getElementById("buttons");
+        
         for (let i = 0; i < movieButtons.length; i++) {
             movieButtons[i].addEventListener("click", minFunktion);
             movieButtons[i].myParam = movieButtons[i].id;
         }
+
+        buttons.style.visibility = "hidden";
 
         function minFunktion(evt) {
             getMovies(evt.currentTarget.myParam);
@@ -82,6 +125,7 @@ fetch(url, options)
             nameh2.innerHTML = movie['original_title'];
             moviePoster.src = "https://image.tmdb.org/t/p/original" + movie['poster_path'];
             description.innerHTML = movie['overview'];
+            displayMovieList();
 
            /*let newMovieDiv = document.createElement("div");
            newMovieDiv.style.width = "100vw";
@@ -96,6 +140,18 @@ fetch(url, options)
            newMovieDiv.appendChild(moviePoster);
            */
         }
+
+        function displayMovieList() {
+
+                if (buttons.style.visibility == "hidden") {
+                buttons.style.visibility = "visible";
+                buttons.style.height = "initial";
+                }
+                else {
+                    buttons.style.visibility = "hidden";
+                    buttons.style.height = "0px";
+                }
+            }
 
 
 //api-key: a19e1c12ac95c94b34d0d5271a379523
