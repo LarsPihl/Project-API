@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+</head>
+<style>
+
+    :root {
+        --light-color: #f3f3f3;
+        --dark-color: #313131;
+        --primary-color: #ea7f8e;
+        --accent-color: #6a5acd;
+        --shadow-color: #cfcfcf;
+      }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+    }
+    #movies {
+        width: 80vw;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #moviePoster {
+        width: 80vw;
+    }
+</style>
+<body>
+
+    <div id = "buttons">
+    <button class = "movieButton" id = "550">Fight Club</button>
+    <button class = "movieButton" id = "551">The Poseidon Adventure</button>
+    </div>
+
+    <div id = "movies"></div>
+    <h2 id = "nameh2"></h2>
+    <img id = "moviePoster" alt = "Movie Poster" src = "">
+    <p id = "synopsis"></p>
+
+    <script>
+
+        let movies = document.getElementById("movies"), nameh2 = document.getElementById("nameh2"), moviePoster = document.getElementById("moviePoster"),
+        description = document.getElementById("synopsis"), hideImageOnce = true,
+        movieButtons = document.getElementsByClassName("movieButton"); 
+
+        for (let i = 0; i < movieButtons.length; i++) {
+            movieButtons[i].addEventListener("click", minFunktion);
+            movieButtons[i].myParam = movieButtons[i].id;
+        }
+
+        function minFunktion(evt) {
+            getMovies(evt.currentTarget.myParam);
+        }
+
+        if (hideImageOnce == true) {
+        moviePoster.style.display = "none";
+        hideImageOnce = false;
+        }
+
+        const options = {method: 'GET', headers: {accept: 'application/json'}};
+        async function getMovies(id) {
+            const url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=a19e1c12ac95c94b34d0d5271a379523";
+fetch(url, options)
+  .then(response => response.json())
+  .then(response => printInfo(response))
+  .catch(err => console.error(err));
+        }
+
+        function printInfo(movie) {
+
+            moviePoster.style.display = "flex";
+            nameh2.innerHTML = movie['original_title'];
+            moviePoster.src = "https://image.tmdb.org/t/p/original" + movie['poster_path'];
+            description.innerHTML = movie['overview'];
+
+           /*let newMovieDiv = document.createElement("div");
+           newMovieDiv.style.width = "100vw";
+           let nameh2 = document.createElement("h2");
+           nameh2.innerHTML = movie['original_title'];
+           let moviePoster = document.createElement("img");
+           moviePoster.style.width = "200px";
+            moviePoster.src = "https://image.tmdb.org/t/p/original" + movie['poster_path'];
+
+           movies.appendChild(newMovieDiv);
+           newMovieDiv.appendChild(nameh2);
+           newMovieDiv.appendChild(moviePoster);
+           */
+        }
+
+
+//api-key: a19e1c12ac95c94b34d0d5271a379523
+    </script>
+    
+</body>
+</html>
